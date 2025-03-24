@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursor - The AI File Organizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #111;
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .account-icon {
+            width: 24px;
+            height: 24px;
+            background-color: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .download-btn {
+            background-color: white;
+            color: black;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-btn img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(90deg, #5c2d91 0%, #d63964 33%, #e87f1e 66%, #3fa535 100%);
+            border-radius: 12px;
+            margin: 0 20px;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 80px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 40px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .cta-btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .primary-btn {
+            background-color: white;
+            color: black;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .secondary-btn {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+        }
+
+        .editor-preview {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .editor-header {
+            background-color: #1e1e1e;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .red {
+            background-color: #ff5f57;
+        }
+
+        .yellow {
+            background-color: #febc2e;
+        }
+
+        .green {
+            background-color: #28c940;
+        }
+
+        .editor-body {
+            display: flex;
+            background-color: #1e1e1e;
+            height: 400px;
+        }
+
+        .code-area {
+            flex: 7;
+            padding: 10px;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #d4d4d4;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .line-numbers {
+            color: #858585;
+            padding-right: 10px;
+            text-align: right;
+            user-select: none;
+        }
+
+        .code-content {
+            display: flex;
+        }
+
+        .code-text {
+            flex: 1;
+        }
+
+        .code-line {
+            display: flex;
+            margin-bottom: 2px;
+        }
+
+        .keyword {
+            color: #569cd6;
+        }
+
+        .type {
+            color: #4ec9b0;
+        }
+
+        .structure {
+            color: #c586c0;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+        }
+
+        .function {
+            color: #dcdcaa;
+        }
+
+        .decorator {
+            color: #808080;
+        }
+
+        .chat-area {
+            flex: 3;
+            border-left: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 10px;
+            border-bottom: 1px solid #333;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            gap: 15px;
+        }
+
+        .chat-header-item {
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 10px;
+            font-size: 12px;
+            overflow-y: auto;
+        }
+
+        .file-path {
+            color: #858585;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .chat-message {
+            margin-bottom: 20px;
+        }
+
+        .user-message {
+            color: #d4d4d4;
+        }
+
+        .ai-message {
+            color: #d4d4d4;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        .code-highlight {
+            background-color: rgba(86, 156, 214, 0.2);
+        }
+
+        .accept-btn {
+            background-color: #3fa535;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        .reject-btn {
+            background-color: transparent;
+            color: #d4d4d4;
+            border: none;
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        .highlighted-line {
+            background-color: rgba(63, 165, 53, 0.2);
+        }
+        
+        .error-line {
+            background-color: rgba(214, 57, 100, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+
+            <span>CLARUS</span>
+        </div>
+
+        <div class="nav-actions">
+
+            <a href="https://github.com/Hyunwoonator/2025lghacks-final" class="download-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18.71 14.29L13.71 19.29C13.32 19.68 12.68 19.68 12.29 19.29L7.29 14.29C6.9 13.9 6.9 13.26 7.29 12.87C7.68 12.48 8.32 12.48 8.71 12.87L11 15.17V2C11 1.45 11.45 1 12 1C12.55 1 13 1.45 13 2V15.17L15.29 12.87C15.68 12.48 16.32 12.48 16.71 12.87C17.1 13.26 17.1 13.9 16.71 14.29Z" fill="black"/>
+                    <path d="M20 22H4C3.45 22 3 21.55 3 21C3 20.45 3.45 20 4 20H20C20.55 20 21 20.45 21 21C21 21.55 20.55 22 20 22Z" fill="black"/>
+                </svg>
+                DOWNLOAD
+            </a>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>THE AI FILE ORGANIZER</h1>
+            <p>Clarus is the best way to organize your files with AI.</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/Hyunwoonator/2025lghacks-final" class="cta-btn primary-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18.71 14.29L13.71 19.29C13.32 19.68 12.68 19.68 12.29 19.29L7.29 14.29C6.9 13.9 6.9 13.26 7.29 12.87C7.68 12.48 8.32 12.48 8.71 12.87L11 15.17V2C11 1.45 11.45 1 12 1C12.55 1 13 1.45 13 2V15.17L15.29 12.87C15.68 12.48 16.32 12.48 16.71 12.87C17.1 13.26 17.1 13.9 16.71 14.29Z" fill="black"/>
+                        <path d="M20 22H4C3.45 22 3 21.55 3 21C3 20.45 3.45 20 4 20H20C20.55 20 21 20.45 21 21C21 21.55 20.55 22 20 22Z" fill="black"/>
+                    </svg>
+                    DOWNLOAD FOR MACOS
+                </a>
+            </div>
+        </div>
+        <br>
+       <img src="img.png" alt="" style="border-radius: 20px;">
+                    
+                
+               
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

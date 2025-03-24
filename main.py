@@ -75,9 +75,7 @@ class DashboardApp:
         # Navigation buttons
         self.nav_buttons = []
         nav_items = [
-            ("Dashboard", "home"),
-            ("Analytics", "analytics"),
-            ("History", "history")
+            ("Dashboard", "home")
         ]
         
         for text, page in nav_items:
