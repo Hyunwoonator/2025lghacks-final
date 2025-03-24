@@ -64,8 +64,13 @@ class DashboardApp:
         self.sidebar_frame.pack(side="left", fill="y", expand=False)
         
         # App Logo/Title
-        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="Clarus Files", font=("Arial", 24, "bold"))
-        self.logo_label.pack(pady=(20, 30))
+        self.greeting_text = ctk.CTkLabel(
+            self.sidebar_frame, 
+            text="Clarus", 
+            font=("Tahoma", 35, "bold"),
+            text_color=colors["lavender"]
+        )
+        self.greeting_text.pack()
         
         # Navigation buttons
         self.nav_buttons = []
